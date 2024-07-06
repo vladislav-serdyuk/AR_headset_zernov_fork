@@ -13,7 +13,7 @@ class pane():
         self.draw = ImageDraw.Draw(self.image)
         now = datetime.datetime.now()
         time = now.strftime("%H:%M")
-        data = now.strftime("%d-%m-%Y")
+        data = now.strftime("%d.%m.%Y")
         match now.strftime("%A"):
             case "Monday":
                 weekday = "Понедельник"

@@ -11,16 +11,16 @@ computer_icon = Image.open('applications/resources/computer.png')
 class panel():
     """Тип данных объект интерфейса"""
     active: bool = None # Shows object on next draw
-    size: int = (700, 330)
-    destination: int = (600, 500)
+    size: int = (800, 330)
+    destination: int = (450, 500)
     button_timer: int = 0
     def check_in_region(self, top_left, bottom_right, point):
         if (point[1] > top_left[1] and point[1] < bottom_right[1] and point[0] > top_left[0] and point[0] < bottom_right[0]): # Check if point coordinates inside the region
             return True
         else:
             return False
-        
-    def main(self):
+    def __init__(self, active):
+        self.active = active
         self.image = Image.new('RGBA', self.size, (0, 0, 0, 0))
         self.draw = ImageDraw.Draw(self.image)
         
@@ -31,47 +31,57 @@ class panel():
         self.image.paste(video_icon, (100, 200), video_icon)
         self.image.paste(compose_icon, (300, 200), compose_icon)
         self.image.paste(computer_icon, (500, 200), computer_icon)
+        pass
+        
+    def main(self):
         return self.image
     def controller (self, coordinates): # Здесь пишем что исполняется по нажатию на кнопку. При этом coordinates - координата указательного пальца НА ПОЛОТНЕ ОБЪЕКТА (self.size)
         if (self.check_in_region([0,0], [128,128], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_calc"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([200,0], [328,128], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_clock"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([400,0], [528,128], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_keyboard"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([600,0], [728,128], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_folder"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([100,200], [228,328], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_video"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([300,200], [428,328], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_compose"
             else:
                 self.button_timer += 1
         elif (self.check_in_region([500,200], [628,328], coordinates)):
-            if (self.button_timer > 20):
+            if (self.button_timer > 10):
                 self.button_timer = 0
+                self.active = False
                 return "run_computer"
             else:
                 self.button_timer += 1

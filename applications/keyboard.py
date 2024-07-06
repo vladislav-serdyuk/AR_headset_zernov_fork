@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 from dataclasses import dataclass, field
 
 @dataclass
@@ -8,6 +8,7 @@ class pane():
     size: int = (860, 300) # Размер (Не более 1440x1480)
     destination: int = (200, 500) # Расположение на экране (координата на пространстве 1440x1480)
     button_timer: int = 0
+    multiplier: float = 1.0
     def check_in_region(self, top_left, bottom_right, point):
         if (point[1] > top_left[1] and point[1] < bottom_right[1] and point[0] > top_left[0] and point[0] < bottom_right[0]): # Check if point coordinates inside the region
             return True
@@ -23,7 +24,7 @@ class pane():
             'QWERTYUIOPX',
             'ASDFGHJKL?',
             'ZXCVBNM.,!',
-            ' '
+            '    '
         ]
         self.active = active
         self.image = Image.new('RGBA', self.size, (0, 0, 0, 0))
