@@ -20,45 +20,36 @@ pip install -r requirements.txt
 
 After installing all dependency, you can set config of application.
 
-In the start of code "AR_HeadSet.py" you can find some configuration lines:
-```python
-use_1_camera = True
-use_1_cameras_width = 1280
-use_1_cameras_height = 720
-
-use_2_cameras = False
-use_2_cameras_width = 1280
-use_2_cameras_height = 720
-use_2_cameras_first = 0
-use_2_cameras_second = 1
-
-use_PS5_camera = False
-
-use_PS4_camera = False
+In the file [config.ini](./config.ini) you can find some configuration lines:
+```ini
+[Camera]
+mode=ps5camera
+# 1camera, 2camera, ps4camera (2560x800), ps5camera (3840x1080), camera_off
+resolution_w=1280
+resolution_h=720
+first_camera_id=0
+second_camera_id=1
+ps5camera_id=0
+ps4camera_id=0
+rotate_image=False
 ...
 ```
 
 Here you can set your camera type.
-use_1_camera - 1 USB UVC WEBCam.\
-use_2_cameras - 2 different USB UVC WEBCam's. Just cameras, nothing interesting.\
-use_PS4_camera - HD (720p) stereo camera, made for Playstation 4. Works with cable and [driver](https://github.com/Hackinside/PS4-CAMERA-DRIVERS)\
-use_PS5_camera - Full HD (1080p) stereo camera for PS5. Doesn't need a cable, but needs [driver](https://github.com/Hackinside/PS5_camera_files)
+1camera - 1 USB UVC WEBCam.\
+2camera - 2 different USB UVC WEBCam's. Just cameras, nothing interesting.\
+ps4camera - HD (720p) stereo camera, made for Playstation 4. Works with cable and [driver](https://github.com/Hackinside/PS4-CAMERA-DRIVERS)\
+ps5camera - Full HD (1080p) stereo camera for PS5. Doesn't need a cable, but needs [driver](https://github.com/Hackinside/PS5_camera_files)
+camera_off - work without camera (black screen).
 
-After cameras you can choose tracking module from list:
+In the end of configuration you can turn on/off video recording, GUI, barrel_distortion and web interface:
 ```python
-import tracking_mp_opt as tracking #Fast
-# import tracking_cvzone as tracking #Medium
-# import tracking_v1 as tracking #Slow
-```
-Uncomment one of them.
-
-In the end of configuration you can turn on/off video recording, GUI and web interface:
-```python
-active_recording = True
-
-active_gui = True
-
-active_flask = True
+[Options]
+active_interface=True
+video_recording=False
+tracking_active=True
+webserver_active=True
+barrel_distortion=False
 ```
 That's it. 
 
