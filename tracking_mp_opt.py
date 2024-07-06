@@ -2,6 +2,7 @@ import mediapipe as mp
 import cv2
 import numpy as np
 from cvzone.SelfiSegmentationModule import SelfiSegmentation
+from math import dist
 
 mp_hands = mp.solutions.hands
 
@@ -14,8 +15,9 @@ mp_draw = mp.solutions.drawing_utils
 segmentor = SelfiSegmentation()
 class controller():
     
-    def remove_background(self,img):
+    def remove_background(self,img,minx,miny,maxx,maxy):
         try:
+            img = img[miny:maxy, minx:maxx]
             gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     
             _, mask = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) 
@@ -25,9 +27,9 @@ class controller():
             result = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)
             result[:, :, 3] = mask
 
-            return result, mask
+            return result
         except:
-            return img, img
+            return img
             pass
     
     def find_and_get_hands(self, image):
@@ -35,7 +37,6 @@ class controller():
 
         lmList = []
         miny, minx, maxy, maxx = 0, 0, 0, 0
-        mask = 0
 
         if results.multi_hand_landmarks:
             myHand = results.multi_hand_landmarks[0]
@@ -48,13 +49,11 @@ class controller():
             lmArray = np.array(lmList)
             xlist = lmArray[:, 1]
             ylist = lmArray[:, 2]
+            distance = (1500-dist(*[(np.clip(np.min(xlist) - 30, 1, None), np.clip(np.min(ylist) - 30, 1, None)), (np.clip(np.max(xlist) + 30, 1, None), np.clip(np.max(ylist) + 30, 1, None))]))//10
+            if (distance < 115 and distance > 0):
+                return lmList, miny, minx, maxy, maxx, distance
+            else:
+                return [],0,0,0,0,0
+        else:
+            return lmList, miny, minx, maxy, maxx, 0
 
-            minx = np.clip(np.min(xlist) - 30, 1, None)
-            maxx = np.clip(np.max(xlist) + 30, 1, None)
-            miny = np.clip(np.min(ylist) - 30, 1, None)
-            maxy = np.clip(np.max(ylist) + 30, 1, None)
-
-            image = image[miny:maxy, minx:maxx]
-            image, mask = self.remove_background(image)
-
-        return image, lmList, miny, minx, maxy, maxx, mask
