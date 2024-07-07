@@ -20,45 +20,36 @@ pip install -r requirements.txt
 
 После установки зависимостей, вы можете настроить программу.
 
-В начале кода "AR_HeadSet.py" вы можете найти немного конфигурационных линий:
-```python
-use_1_camera = True
-use_1_cameras_width = 1280
-use_1_cameras_height = 720
-
-use_2_cameras = False
-use_2_cameras_width = 1280
-use_2_cameras_height = 720
-use_2_cameras_first = 0
-use_2_cameras_second = 1
-
-use_PS5_camera = False
-
-use_PS4_camera = False
+В файле [config.ini](./config.ini) вы можете найти немного конфигурационных линий:
+```ini
+[Camera]
+mode=ps5camera
+# 1camera, 2camera, ps4camera (2560x800), ps5camera (3840x1080), camera_off
+resolution_w=1280
+resolution_h=720
+first_camera_id=0
+second_camera_id=1
+ps5camera_id=0
+ps4camera_id=0
+rotate_image=False
 ...
 ```
 
 Здесь устанавливается тип камеры. 
-use_1_camera - 1 USB UVC камера.\
-use_2_cameras - 2 разных USB UVC камеры. Просто камеры, ничего интересного.\
-use_PS4_camera - HD (720p) стерео камера, разработанная для PS4. Работает со специальным кабелем и драйвером, который можно найти [тут](https://github.com/Hackinside/PS4-CAMERA-DRIVERS)\
-use_PS5_camera - Full HD (1080p) стерео камера для PS5. Не требует переходника, но требует [драйвера](https://github.com/Hackinside/PS5_camera_files)
+1camera - 1 USB UVC камера.\
+2camera - 2 разных USB UVC камеры. Просто камеры, ничего интересного.\
+ps4camera - HD (720p) стерео камера, разработанная для PS4. Работает со специальным кабелем и драйвером, который можно найти [тут](https://github.com/Hackinside/PS4-CAMERA-DRIVERS)\
+ps5camera - Full HD (1080p) стерео камера для PS5. Не требует переходника, но требует [драйвера](https://github.com/Hackinside/PS5_camera_files)
+camera_off - работа без камеры. Черный экран.
 
-После установки камеры вы можете выбрать модуль трекинга из списка:
+В конце конфигурационного кода вы можете найти строки отключения/включения видеозаписи, barrel distiortion, трекинга, GUI (интерфейса) и веб интерфейс:
 ```python
-import tracking_mp_opt as tracking #Быстро
-# import tracking_cvzone as tracking #Средне
-# import tracking_v1 as tracking #Медленно
-```
-Раскомментируйте один из них.
-
-В конце конфигурационного кода вы можете найти строки отключения/включения видеозаписи, GUI (интерфейса) и веб интерфейс:
-```python
-active_recording = True
-
-active_gui = True
-
-active_flask = True
+[Options]
+active_interface=True
+video_recording=False
+tracking_active=True
+webserver_active=True
+barrel_distortion=False
 ```
 Это всё. 
 
