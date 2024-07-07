@@ -213,8 +213,8 @@ if __name__ == '__main__':  # Точка входа
 
     if eval(config["Options"]["webserver_active"]):
         logger("Попытка запуска потока ВЕБ-сервера.", "Debug")
-        (threading.Thread(target=lambda: app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False), daemon=True)
-         .start())
+        (threading.Thread(target=lambda: app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False), daemon=True
+                          ).start())
 
     threading.Thread(name='right_eye', target=work_right, daemon=True).start()  # Точка запуска потока правого глаза.
     threading.Thread(name='left_eye', target=work_left, daemon=True).start()  # Точка запуска потока левого глаза.
