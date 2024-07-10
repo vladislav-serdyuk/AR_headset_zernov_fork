@@ -239,6 +239,7 @@ if __name__ == '__main__':  # Точка входа
                     right_actual_image = cv2.resize(right_actual_image, (1440, 1440))
                     left_actual_image = cv2.resize(left_actual_image, (1440, 1440))
                 case "1camera":
+                    # noinspection PyUnboundLocalVariable
                     right_actual_image = cv2.resize(actual_image[:,
                                                     actual_image.shape[1] // 10 * 2:actual_image.shape[1] // 10 * 8],
                                                     (1440, 1440))
