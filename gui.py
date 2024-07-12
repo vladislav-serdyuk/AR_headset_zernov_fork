@@ -99,7 +99,7 @@ class GUIMachine:
         self.left_gui.paste(gui, (0 + self.calculated_x - self.plus_pixels_by_x, 0), gui)
         self.right_gui.paste(gui, (0 - self.calculated_x - self.plus_pixels_by_x, 0), gui)
 
-        if eval(config["Options"]["barrel_distortion"]):
+        if config["Options"]["barrel_distortion"] == "True":
             return cv2.cvtColor(np.array(self.left_gui), cv2.COLOR_BGRA2RGB), cv2.cvtColor(np.array(self.right_gui),
                                                                                            cv2.COLOR_BGRA2RGB)
         else:
@@ -128,7 +128,8 @@ class GUIMachine:
                                      index_finger_coordinates) and not self.middle_region and self.right_region):
                 self.middle_region = True
             if (self.check_in_region(self.left_region_coordinates[0], self.left_region_coordinates[1],
-                                     index_finger_coordinates) and not self.left_region and self.middle_region and self.right_region):
+                                     index_finger_coordinates) and not self.left_region and self.middle_region
+                    and self.right_region):
                 self.left_region = True
         else:
             self.right_region = False
@@ -141,64 +142,74 @@ class GUIMachine:
             self.middle_region = False
             self.left_region = False
 
-        if (abs(big_finger_coordinates[1] - (self.calculated_x - self.plus_pixels_by_x) - index_finger_coordinates[
-            1]) < 60 and abs(big_finger_coordinates[2] - index_finger_coordinates[
-            2]) < 60):  # Check, if index finger near the big finger
+        if (abs(big_finger_coordinates[1] - (self.calculated_x - self.plus_pixels_by_x) - index_finger_coordinates[1])
+                < 60 and abs(big_finger_coordinates[2] - index_finger_coordinates[2]) < 60):  # Check, if index
+            # finger near the big finger
             # if index near big.
             if (self.check_in_region(calc.destination,
                                      [calc.destination[0] + calc.size[0], calc.destination[1] + calc.size[1]],
-                                     index_finger_coordinates) and calc.active):  # Check, if index finger inside the clocks
+                                     index_finger_coordinates) and calc.active):  # Check, if index finger inside the
+                # clocks
                 calc.destination = [index_finger_coordinates[1] - calc.size[0] // 2,
                                     index_finger_coordinates[2] - calc.size[
                                         1] // 2]  # Set the center of clocks to the index finger
             elif (self.check_in_region(clocks.destination,
                                        [clocks.destination[0] + clocks.size[0], clocks.destination[1] + clocks.size[1]],
-                                       index_finger_coordinates) and clocks.active):  # Check, if index finger inside the clocks
+                                       index_finger_coordinates) and clocks.active):  # Check, if index finger inside
+                # the clocks
                 clocks.destination = [index_finger_coordinates[1] - clocks.size[0] // 2,
                                       index_finger_coordinates[2] - clocks.size[
                                           1] // 2]  # Set the center of clocks to the index finger
             elif (self.check_in_region(paint_app.destination, [paint_app.destination[0] + paint_app.size[0],
                                                                paint_app.destination[1] + paint_app.size[1]],
-                                       index_finger_coordinates) and paint_app.active):  # Check, if index finger inside the clocks
+                                       index_finger_coordinates) and paint_app.active):  # Check, if index finger
+                # inside the clocks
                 paint_app.destination = [index_finger_coordinates[1] - paint_app.size[0] // 2,
                                          index_finger_coordinates[2] - paint_app.size[
                                              1] + 50]  # Set the center of clocks to the index finger
             elif (self.check_in_region(keyboard_app.destination, [keyboard_app.destination[0] + keyboard_app.size[0],
                                                                   keyboard_app.destination[1] + keyboard_app.size[1]],
-                                       index_finger_coordinates) and keyboard_app.active):  # Check, if index finger inside the clocks
+                                       index_finger_coordinates) and keyboard_app.active):  # Check, if index finger
+                # inside the clocks
                 keyboard_app.destination = [index_finger_coordinates[1] - keyboard_app.size[0] // 2,
                                             index_finger_coordinates[2] - keyboard_app.size[
                                                 1] // 2]  # Set the center of clocks to the index finger
             elif (self.check_in_region(settings_app.destination, [settings_app.destination[0] + settings_app.size[0],
                                                                   settings_app.destination[1] + settings_app.size[1]],
-                                       index_finger_coordinates) and settings_app.active):  # Check, if index finger inside the clocks
+                                       index_finger_coordinates) and settings_app.active):  # Check, if index finger
+                # inside the clocks
                 settings_app.destination = [index_finger_coordinates[1] - settings_app.size[0] // 2,
                                             index_finger_coordinates[2] - settings_app.size[
                                                 1] + 50]  # Set the center of clocks to the index finger
 
         elif (self.check_in_region(right_panel.destination, [right_panel.destination[0] + right_panel.size[0],
                                                              right_panel.destination[1] + right_panel.size[1]],
-                                   index_finger_coordinates) and right_panel.active):  # Check, if index finger inside the clocks
+                                   index_finger_coordinates) and right_panel.active):  # Check, if index finger
+            # inside the clocks
             self.command_receiver(right_panel.controller([index_finger_coordinates[1] - right_panel.destination[0],
                                                           index_finger_coordinates[2] - right_panel.destination[1]]))
         elif (self.check_in_region(apps.destination,
                                    [apps.destination[0] + apps.size[0], apps.destination[1] + apps.size[1]],
-                                   index_finger_coordinates) and apps.active):  # Check, if index finger inside the clocks
+                                   index_finger_coordinates) and apps.active):  # Check, if index finger inside the
+            # clocks
             self.command_receiver(apps.controller(
                 [index_finger_coordinates[1] - apps.destination[0], index_finger_coordinates[2] - apps.destination[1]]))
         elif (self.check_in_region(paint_app.destination, [paint_app.destination[0] + paint_app.size[0],
                                                            paint_app.destination[1] + paint_app.size[1]],
-                                   index_finger_coordinates) and paint_app.active):  # Check, if index finger inside the clocks
+                                   index_finger_coordinates) and paint_app.active):  # Check, if index finger inside
+            # the clocks
             self.command_receiver(paint_app.controller([index_finger_coordinates[1] - paint_app.destination[0],
                                                         index_finger_coordinates[2] - paint_app.destination[1]]))
         elif (self.check_in_region(keyboard_app.destination, [keyboard_app.destination[0] + keyboard_app.size[0],
                                                               keyboard_app.destination[1] + keyboard_app.size[1]],
-                                   index_finger_coordinates) and keyboard_app.active):  # Check, if index finger inside the clocks
+                                   index_finger_coordinates) and keyboard_app.active):  # Check, if index finger
+            # inside the clocks
             self.command_receiver(keyboard_app.controller([index_finger_coordinates[1] - keyboard_app.destination[0],
                                                            index_finger_coordinates[2] - keyboard_app.destination[1]]))
         elif (self.check_in_region(settings_app.destination, [settings_app.destination[0] + settings_app.size[0],
                                                               settings_app.destination[1] + settings_app.size[1]],
-                                   index_finger_coordinates) and settings_app.active):  # Check, if index finger inside the clocks
+                                   index_finger_coordinates) and settings_app.active):  # Check, if index finger
+            # inside the clocks
             self.command_receiver(settings_app.controller([index_finger_coordinates[1] - settings_app.destination[0],
                                                            index_finger_coordinates[2] - settings_app.destination[1]],
                                                           config))
